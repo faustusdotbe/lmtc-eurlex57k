@@ -9,7 +9,7 @@ from keras.layers import Dense, Embedding, add, concatenate
 from keras.layers import Input, SpatialDropout1D
 from keras.layers.wrappers import TimeDistributed
 from keras.models import Model
-from keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam
 from keras.regularizers import l2
 from keras.constraints import MinMaxNorm
 
