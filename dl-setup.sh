@@ -1,7 +1,7 @@
-wget -P data/vectors/ http://nlp.stanford.edu/data/glove.6B.zip
-unzip -j data/vectors/glove.6B.zip data/vectors/glove.6B.200d.txt
-echo -e "400000 200\n$(cat data/vectors/glove.6B.200d.txt)" > data/vectors/glove.6B.200d.txt
-wget -O data/vectors/law2vec.200d.txt https://archive.org/download/Law2Vec/Law2Vec.200d.txt
+#wget -P data/vectors/ http://nlp.stanford.edu/data/glove.6B.zip
+#unzip -j data/vectors/glove.6B.zip data/vectors/glove.6B.200d.txt
+#echo -e "400000 200\n$(cat data/vectors/glove.6B.200d.txt)" > data/vectors/glove.6B.200d.txt
+#wget -O data/vectors/law2vec.200d.txt https://archive.org/download/Law2Vec/Law2Vec.200d.txt
 
 wget -O data/datasets/datasets.zip http://nlp.cs.aueb.gr/software_and_datasets/EURLEX57K/datasets.zip
 unzip data/datasets/datasets.zip -d data/datasets/EURLEX57K

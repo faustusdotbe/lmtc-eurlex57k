@@ -28,6 +28,7 @@ class Configuration(object, metaclass=ParameterStore):
 
         with open(os.path.join('lmtc_configuration.json')) as config_file:
             parameters = json.load(config_file)
+        #print(parameters)
 
         # Setup Logging
         log_name = '{}_{}_{}_{}'.format(Configuration['task']['dataset'].upper(),

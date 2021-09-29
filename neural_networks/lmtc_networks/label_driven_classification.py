@@ -60,6 +60,7 @@ class LabelDrivenClassification:
         if encoder == 'grus':
             # Bi-GRUs over token embeddings
             for i in range(hidden_layers):
+                print(f"Using -cuDNN? {self._cuDNN}")
                 if self._cuDNN:
                     bi_grus = Bidirectional(CuDNNGRU(units=hidden_units_size, return_sequences=True))(inner_inputs)
                 else:

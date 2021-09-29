@@ -92,6 +92,7 @@ class DocumentClassification:
         for i in range(n_hidden_layers):
             if i == n_hidden_layers - 1:
                 return_sequences = False
+            print(f"Using -cuDNN? {self._cuDNN}")
             if self._cuDNN:
                 grus = Bidirectional(CuDNNGRU(hidden_units_size, return_sequences=return_sequences), name='bidirectional_grus_{}'.format(i))(encodings)
             else:
@@ -147,6 +148,7 @@ class DocumentClassification:
 
         # Bi-GRUs over token embeddings
         for i in range(n_hidden_layers):
+            print(f"Using -cuDNN? {self._cuDNN}")
             if self._cuDNN:
                 grus = Bidirectional(CuDNNGRU(hidden_units_size, return_sequences=True), name='bidirectional_grus_{}'.format(i))(encodings)
             else:
@@ -200,6 +202,7 @@ class DocumentClassification:
 
         # Bi-GRUs over token embeddings
         for i in range(n_hidden_layers[0]):
+            print(f"Using -cuDNN? {self._cuDNN}")
             if self._cuDNN:
                 grus = Bidirectional(CuDNNGRU(hidden_units_size[0], return_sequences=True, kernel_constraint=MinMaxNorm(min_value=-2, max_value=2)),
                                      name='bidirectional_grus_{}'.format(i))(encodings)
@@ -232,6 +235,7 @@ class DocumentClassification:
 
         # BI-GRUs over section embeddings
         for i in range(n_hidden_layers[1]):
+            print(f"Using -cuDNN? {self._cuDNN}")
             if self._cuDNN:
                 grus = Bidirectional(CuDNNGRU(hidden_units_size[1], return_sequences=True,
                                               kernel_constraint=MinMaxNorm(min_value=-2, max_value=2)),
