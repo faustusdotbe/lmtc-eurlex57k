@@ -16,6 +16,7 @@ class Document:
         :param tags: list of Tag objects
         """
         self.tokens = [token.text for token in Document.tagger.tokenize_text(text)]
+        #print(self.tokens)
 
         if sentences:
             self.sentences = []

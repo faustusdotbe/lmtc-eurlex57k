@@ -18,12 +18,17 @@ class JSONLoader:
         sections.append(data['header'])
         sections.append(data['recitals'])
         sections.extend(data['main_body'])
-        sections.extend(data['attachments'])
-
+        #sections.extend(data['attachments'])
+        #print(sections)
+        """
         if not Configuration['sampling']['hierarchical']:
             text = '\n'.join(sections)
             sections = []
+        """
+        text = '\n'.join(sections)
+        #print(text)
+        sections = []
         for concept in data['concepts']:
             tags.append(concept)
-
+        
         return Document(text, tags, sentences=sections, filename=os.path.basename(filename))

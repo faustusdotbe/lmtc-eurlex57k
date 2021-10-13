@@ -23,12 +23,19 @@ class BERTVectorizer(Vectorizer):
         super().__init__()
 
     def vectorize_inputs(self, sequences: List[List[str]], max_sequence_size=100, **kwargs):
-
+        
         bert_tokenizer = BERTTextEncoder(vocab_file=os.path.join(DATA_DIR, 'bert',
                                                                  Configuration['model']['bert'],
                                                                  'vocab.txt'),
                                          do_lower_case=True,
                                          max_len=max_sequence_size)
+        """
+        bert_tokenizer = BERTTextEncoder(vocab_file=os.path.join("/home/ubuntu/lmtc-eurlex57kDIR", 'bert',
+                                                                 Configuration['model']['bert'],
+                                                                 'vocab.txt'),
+                                         do_lower_case=True,
+                                         max_len=max_sequence_size)
+        """
 
         token_indices = np.zeros((len(sequences), max_sequence_size), dtype=np.int32)
         seg_indices = np.zeros((len(sequences), max_sequence_size), dtype=np.int32)
@@ -64,7 +71,8 @@ class ELMoVectorizer(Vectorizer):
 
 class W2VVectorizer(Vectorizer):
 
-    def __init__(self, w2v_model='glove.6B.200d.txt'):
+    #def __init__(self, w2v_model='glove.6B.200d.txt'):
+    def __init__(self, w2v_model='law2vec.200d.txt'):
         super().__init__()
         self.w2v_model = w2v_model
 
@@ -97,10 +105,11 @@ class W2VVectorizer(Vectorizer):
         word_inputs = np.zeros((len(sequences), max_sequence_size, ), dtype=np.int32)
 
         for i, sentence in enumerate(sequences):
+            
             for j, token in enumerate(sentence[:max_sequence_size]):
                 if self.norm(token) in self.word_indices:
                     word_inputs[i][j] = self.word_indices[self.norm(token)]
                 else:
                     word_inputs[i][j] = self.word_indices['unknown']
-        
+        #print(word_inputs)
         return word_inputs

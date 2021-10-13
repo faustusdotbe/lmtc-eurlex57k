@@ -9,6 +9,8 @@ import time
 import tempfile
 import glob
 import tqdm
+from multiprocessing import Pool
+N_CORES = os.cpu_count()-1
 
 import numpy as np
 from copy import deepcopy
@@ -125,6 +127,11 @@ class LMTC:
         LOGGER.info('Frequent labels: {}'.format(len(frequent)))
         LOGGER.info('Few labels:      {}'.format(len(few)))
         LOGGER.info('Zero labels:     {}'.format(len(true_zero)))
+    
+    def data_loader_sim(self, filename):
+        loader = JSONLoader()
+        doc = loader.read_file(filename)
+        return doc
 
     def load_dataset(self, dataset_name):
         """
@@ -134,11 +141,23 @@ class LMTC:
         """
         filenames = glob.glob(os.path.join(DATA_SET_DIR, Configuration['task']['dataset'], dataset_name, '*.json'))
         loader = JSONLoader()
+        """
+        filenames = sorted(filenames)
+        result_objs = []
+        with Pool(processes = N_CORES) as pool:
+            for _ in range(len(filenames)):
+                #print(_)
+                result = pool.apply_async(self.data_loader_sim, (filenames[_],))
+                result_objs.append(result)
+            documents = [result.get() for result in result_objs]
+    
 
+        """
         documents = []
         for filename in tqdm.tqdm(sorted(filenames)):
             documents.append(loader.read_file(filename))
-
+        
+        
         return documents
 
     def process_dataset(self, documents):
@@ -298,9 +317,9 @@ class LMTC:
             LOGGER.info(message)
             LOGGER.info('----------------------------------------------------')
             for average_type in ['micro', 'macro', 'weighted']:
-                p = precision_score(true_targets[:, start:end], pred_targets[:, start:end], average=average_type)
-                r = recall_score(true_targets[:, start:end], pred_targets[:, start:end], average=average_type)
-                f1 = f1_score(true_targets[:, start:end], pred_targets[:, start:end], average=average_type)
+                p = precision_score(true_targets[:, start:end], pred_targets[:, start:end], average=average_type, zero_division=1)
+                r = recall_score(true_targets[:, start:end], pred_targets[:, start:end], average=average_type, zero_division=1)
+                f1 = f1_score(true_targets[:, start:end], pred_targets[:, start:end], average=average_type, zero_division=1)
                 LOGGER.info('{:8} - Precision: {:1.4f}   Recall: {:1.4f}   F1: {:1.4f}'.format(average_type, p, r, f1))
 
             for i in range(1, Configuration['sampling']['evaluation@k'] + 1):
