@@ -220,3 +220,6 @@ for i, x in enumerate(val_tags[:10]):
     print(label_terms_text_labels, ot)
     print()
 """
+
+print(len(label_terms_text))
+print(len(set(label_terms_text)))
