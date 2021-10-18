@@ -128,11 +128,6 @@ class LMTC:
         LOGGER.info('Few labels:      {}'.format(len(few)))
         LOGGER.info('Zero labels:     {}'.format(len(true_zero)))
     
-    def data_loader_sim(self, filename):
-        loader = JSONLoader()
-        doc = loader.read_file(filename)
-        return doc
-
     def load_dataset(self, dataset_name):
         """
         Load dataset and return list of documents
@@ -141,18 +136,7 @@ class LMTC:
         """
         filenames = glob.glob(os.path.join(DATA_SET_DIR, Configuration['task']['dataset'], dataset_name, '*.json'))
         loader = JSONLoader()
-        """
-        filenames = sorted(filenames)
-        result_objs = []
-        with Pool(processes = N_CORES) as pool:
-            for _ in range(len(filenames)):
-                #print(_)
-                result = pool.apply_async(self.data_loader_sim, (filenames[_],))
-                result_objs.append(result)
-            documents = [result.get() for result in result_objs]
-    
-
-        """
+     
         documents = []
         for filename in tqdm.tqdm(sorted(filenames)):
             documents.append(loader.read_file(filename))
