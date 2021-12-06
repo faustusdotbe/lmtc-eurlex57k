@@ -72,16 +72,26 @@ class ELMoVectorizer(Vectorizer):
 class W2VVectorizer(Vectorizer):
 
     #def __init__(self, w2v_model='glove.6B.200d.txt'):
-    def __init__(self, w2v_model='law2vec.200d.txt'):
+    #def __init__(self, w2v_model='law2vec.200d.txt'):
+    def __init__(self, w2v_model='kohesio_embeddings.txt'):
         super().__init__()
         self.w2v_model = w2v_model
 
         self.word_indices = {'PAD': 0}
         count = 1
+        line_number = 0
         with open(os.path.join(VECTORS_DIR, w2v_model)) as file:
+            for line in file:
+                if line_number > 0:
+                    self.word_indices[line.split()[0]] = count
+                count += 1
+                line_number += 1
+            
+            """
             for line in file.readlines()[1:]:
                 self.word_indices[line.split()[0]] = count
                 count +=1
+            """
 
     def norm(self, token):
         """
